@@ -30,7 +30,23 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+          'name' => 'required|string',
+          'email' => 'required|email|unique:users',
+          'password' => 'required|min:3|confirmed',
+        ];
+
+        $this->validate($request,$rules);
+
+        $campos = $request->all();
+        $campos['password'] = bcrypt($request->password);
+        $campos['verified'] = User::USUARIO_NO_VERIFICADO;
+        $campos['verification_token'] = User::generateToken();
+        $campos['admin'] = User::USUARIO_NO_ADMINISTRADOR;
+
+        $user = User::create($campos);
+
+        return new UserResource($user);
     }
 
     /**
@@ -39,9 +55,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(string $id)
+    public function show(String $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         return new UserResource($user);
     }
@@ -53,9 +69,47 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, String $id)
     {
-        //
+      $rules = [
+        'email' => 'email|unique:users',
+        'password' => 'min:3|confirmed',
+        'admin' => 'in:'.User::USUARIO_ADMINISTRADOR.','.User::USUARIO_NO_ADMINISTRADOR,
+      ];
+
+      $this->validate($request,$rules);
+
+      $user =User::findOrFail($id);
+
+      if($request->has('name')){
+        $user->name = $request->name;
+      }
+
+      if($request->has('email') && $user->email != $request->email) {
+          $user->verified = User::USUARIO_NO_VERIFICADO;
+          $user->verification_token = User::generateToken();
+          $user->email = $request->email;
+      }
+
+      if($request->has('password')){
+        $user->password = bcrypt($request->password);
+      }
+
+      if($request->has('admin')){
+        if (!$user->verificado()) {
+          return response()->json(['error' => 'only verified users can change their admin value','code' => 409],409)
+        }
+
+        $user->admin = $request->admin;
+      }
+
+      if (!$user->->isDirty()) {
+        return response()->json(['error' => 'at least must have one different value to update','code' => 409],409)
+      }
+
+      $user->save();
+
+      return new UserResource($user);
     }
 
     /**

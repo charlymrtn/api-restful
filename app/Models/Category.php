@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Product;
+
 class Category extends Model
 {
     use SoftDeletes;
@@ -34,5 +36,10 @@ class Category extends Model
           $model->getKeyName() = Uuid::generate(4)->string;
         }
       });
+    }
+
+    public function products()
+    {
+      return $this->belongsToMany(Product::class,'product_uuid','category_uuid')
     }
 }

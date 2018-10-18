@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Buyer;
+use App\Models\Product;
+
 class Transaction extends Model
 {
   use SoftDeletes;
@@ -14,7 +17,7 @@ class Transaction extends Model
   protected $table='transactions';
 
   protected $fillable = [
-      'quantity', 'buyer_id', 'product_id'
+      'quantity', 'buyer_uuid', 'product_uuid'
   ];
 
   protected $dates = [
@@ -34,5 +37,15 @@ class Transaction extends Model
         $model->getKeyName() = Uuid::generate(4)->string;
       }
     });
+  }
+
+  public function buyer()
+  {
+    return $this->belongsTo(Buyer::class,'buyer_uuid','uuid')
+  }
+
+  public function product()
+  {
+    return $this->belongsTo(Product::class,'product_uuid','uuid')
   }
 }

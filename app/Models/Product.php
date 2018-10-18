@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Category;
+use App\Models\Seller;
+use App\Models\Transaction;
+
 class Product extends Model
 {
   use SoftDeletes;
@@ -17,7 +21,7 @@ class Product extends Model
   const PRODUCTO_NO_DISPONIBLE ='no disponible';
 
   protected $fillable = [
-      'name', 'description', 'quantity', 'status', 'image', 'seller_id'
+      'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'
   ];
 
   protected $dates = [
@@ -42,5 +46,20 @@ class Product extends Model
   public function getDisponibleAttribute()
   {
     return $this->status == Product::PRODUCTO_DISPONIBLE;
+  }
+
+  public function seller()
+  {
+    return $this->belongsTo(Seller::class,'selled_uuid','uuid')
+  }
+
+  public function transactions()
+  {
+    return $this->hasMany(Transaction::class,'product_uuid','uuid')
+  }
+
+  public function categories()
+  {
+    return $this->belongsToMany(Category::class,'category_uuid','product_uuid')
   }
 }

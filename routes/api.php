@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+Route::namespace('Api')->group(function () {
+    // Controllers Within The "App\Http\Controllers\Admin" Namespace
+    Route::apiResource('user', 'UserController');
+    Route::apiResource('buyers', 'BuyerController');
+    Route::apiResource('sellers', 'SellerController');
+    Route::apiResource('products', 'ProductController');
+    Route::apiResource('transactions', 'TransactionController');
+    Route::apiResource('categories', 'CategoryController');
+});

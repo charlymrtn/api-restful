@@ -19,10 +19,22 @@ use Illuminate\Http\Request;
 
 Route::namespace('Api')->group(function () {
     // Controllers Within The "App\Http\Controllers\Admin" Namespace
-    Route::apiResource('user', 'UserController');
-    Route::apiResource('buyers', 'BuyerController');
-    Route::apiResource('sellers', 'SellerController');
-    Route::apiResource('products', 'ProductController');
-    Route::apiResource('transactions', 'TransactionController');
-    Route::apiResource('categories', 'CategoryController');
+    Route::apiResource('users', 'UserController')->parameters([
+      'users' => 'id'
+    ]);
+    Route::apiResource('buyers', 'BuyerController')->only(['index','show'])->parameters([
+      'buyers' => 'id'
+    ]);
+    Route::apiResource('sellers', 'SellerController')->only(['index','show'])->parameters([
+      'sellers' => 'id'
+    ]);;
+    Route::apiResource('products', 'ProductController')->only(['index','show'])->parameters([
+      'products' => 'id'
+    ]);;
+    Route::apiResource('transactions', 'TransactionController')->only(['index','show'])->parameters([
+      'transactions' => 'id'
+    ]);;
+    Route::apiResource('categories', 'CategoryController')->parameters([
+      'categories' => 'id'
+    ]);;
 });

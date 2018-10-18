@@ -14,7 +14,7 @@ class Transaction extends Model
   protected $table='transactions';
 
   protected $fillable = [
-      'quantity'
+      'quantity', 'buyer_id', 'product_id'
   ];
 
   protected $dates = [

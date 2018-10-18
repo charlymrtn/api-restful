@@ -13,8 +13,11 @@ class Product extends Model
 
   protected $table='products';
 
+  const PRODUCTO_DISPONIBLE ='disponible';
+  const PRODUCTO_NO_DISPONIBLE ='no disponible';
+
   protected $fillable = [
-      'name', 'description', 'quantity'
+      'name', 'description', 'quantity', 'status', 'image', 'seller_id'
   ];
 
   protected $dates = [
@@ -34,5 +37,10 @@ class Product extends Model
         $model->getKeyName() = Uuid::generate(4)->string;
       }
     });
+  }
+
+  public function getDisponibleAttribute()
+  {
+    return $this->status == Product::PRODUCTO_DISPONIBLE;
   }
 }

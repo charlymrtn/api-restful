@@ -15,13 +15,19 @@ class User extends Authenticatable
 
     protected $table='users';
 
+    const USUARIO_VERIFICADO = '1';
+    const USUARIO_NO_VERIFICADO = '0';
+
+    const USUARIO_ADMINISTRADOR = 'true';
+    const USUARIO_NO_ADMINISTRADOR = 'false';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'verified', ' verification_token', 'admin'
     ];
 
     protected $dates = [
@@ -34,7 +40,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'deleted_at'
+        'password', 'remember_token', 'deleted_at', 'verification_token'
     ];
 
     public static function boot()
@@ -46,5 +52,20 @@ class User extends Authenticatable
           $model->getKeyName() = Uuid::generate(4)->string;
         }
       });
+    }
+
+    public function getVerificadoAttribute()
+    {
+      return $this->verified == User::USUARIO_VERIFICADO;
+    }
+
+    public function getAdministradorAttribute()
+    {
+      return $this->verified == User::USUARIO_ADMINISTRADOR;
+    }
+
+    public static function generateToken()
+    {
+      return str_random(40);
     }
 }

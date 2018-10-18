@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use App\Models\Product;
+
 class CreateProductsTable extends Migration
 {
     /**
@@ -16,10 +18,18 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
 
+            $table->string('name');
+            $table->string('description',1000);
+            $table->unsignedInteger('quantity');
+            $table->string('status')->default(Product::PRODUCTO_NO_DISPONIBLE);
+            $table->string('image');
 
-            
+            $table->uuid('seller_uuid');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('seller_uuid');
         });
     }
 

@@ -16,10 +16,15 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
           $table->uuid('uuid')->primary();
 
+          $table->unsignedInteger('quantity');
 
+          $table->uuid('buyer_uuid');
+          $table->uuid('product_uuid');
 
           $table->timestamps();
           $table->softDeletes();
+
+          $table->index(['buyer_uuid','product_uuid']);
         });
     }
 

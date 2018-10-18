@@ -17,11 +17,15 @@ class Product extends Model
 
   protected $table='products';
 
+  public $incrementing = false;
+  protected $primaryKey = 'uuid';
+  protected $keyType = 'uuid';
+
   const PRODUCTO_DISPONIBLE ='disponible';
   const PRODUCTO_NO_DISPONIBLE ='no disponible';
 
   protected $fillable = [
-      'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'
+      'uuid', 'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'
   ];
 
   protected $dates = [

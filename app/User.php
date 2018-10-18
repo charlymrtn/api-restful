@@ -15,6 +15,10 @@ class User extends Authenticatable
 
     protected $table= 'users';
 
+    public $incrementing = false;
+    protected $primaryKey = 'uuid';
+    protected $keyType = 'uuid';
+
     const USUARIO_VERIFICADO = '1';
     const USUARIO_NO_VERIFICADO = '0';
 
@@ -27,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'verified', ' verification_token', 'admin'
+        'uuid', 'name', 'email', 'password', 'verified', ' verification_token', 'admin'
     ];
 
     protected $dates = [

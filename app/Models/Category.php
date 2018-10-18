@@ -15,8 +15,12 @@ class Category extends Model
 
     protected $table='categories';
 
+    public $incrementing = false;
+    protected $primaryKey = 'uuid';
+    protected $keyType = 'uuid';
+
     protected $fillable = [
-        'name', 'description'
+        'uuid', 'name', 'description'
     ];
 
     protected $dates = [

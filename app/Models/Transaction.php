@@ -16,8 +16,12 @@ class Transaction extends Model
 
   protected $table='transactions';
 
+  public $incrementing = false;
+  protected $primaryKey = 'uuid';
+  protected $keyType = 'uuid';
+
   protected $fillable = [
-      'quantity', 'buyer_uuid', 'product_uuid'
+      'uuid', 'quantity', 'buyer_uuid', 'product_uuid'
   ];
 
   protected $dates = [

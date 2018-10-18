@@ -57,6 +57,6 @@ $factory->define(Transaction::class, function (Faker $faker) {
     return [
         'quantity' => $faker->numberBetween(1,3),
         'buyer_uuid' =>  $buyer->uuid,
-        'product_uuid' =>  $vendedor->products->random()->uuid,
+        'product_uuid' =>  $seller->products->random()->uuid,
     ];
 });

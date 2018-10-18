@@ -32,20 +32,20 @@ class Transaction extends Model
   {
     parent::boot();
     self::creating(function ($model){
-      if(empty($model->getKeyName()))
+      if(empty($model->uuid))
       {
-        $model->getKeyName() = Uuid::generate(4)->string;
+        $model->uuid = Uuid::generate(4)->string;
       }
     });
   }
 
   public function buyer()
   {
-    return $this->belongsTo(Buyer::class,'buyer_uuid','uuid')
+    return $this->belongsTo(Buyer::class,'buyer_uuid','uuid');
   }
 
   public function product()
   {
-    return $this->belongsTo(Product::class,'product_uuid','uuid')
+    return $this->belongsTo(Product::class,'product_uuid','uuid');
   }
 }

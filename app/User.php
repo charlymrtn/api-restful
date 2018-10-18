@@ -13,7 +13,7 @@ class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
 
-    protected $table='users';
+    protected $table= 'users';
 
     const USUARIO_VERIFICADO = '1';
     const USUARIO_NO_VERIFICADO = '0';
@@ -47,9 +47,9 @@ class User extends Authenticatable
     {
       parent::boot();
       self::creating(function ($model){
-        if(empty($model->getKeyName()))
+        if(empty($model->uuid))
         {
-          $model->getKeyName() = Uuid::generate(4)->string;
+          $model->uuid = Uuid::generate(4)->string;
         }
       });
     }

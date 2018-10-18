@@ -36,9 +36,9 @@ class Product extends Model
   {
     parent::boot();
     self::creating(function ($model){
-      if(empty($model->getKeyName()))
+      if(empty($model->uuid))
       {
-        $model->getKeyName() = Uuid::generate(4)->string;
+        $model->uuid = Uuid::generate(4)->string;
       }
     });
   }
@@ -50,16 +50,16 @@ class Product extends Model
 
   public function seller()
   {
-    return $this->belongsTo(Seller::class,'selled_uuid','uuid')
+    return $this->belongsTo(Seller::class,'selled_uuid','uuid');
   }
 
   public function transactions()
   {
-    return $this->hasMany(Transaction::class,'product_uuid','uuid')
+    return $this->hasMany(Transaction::class,'product_uuid','uuid');
   }
 
   public function categories()
   {
-    return $this->belongsToMany(Category::class,'category_uuid','product_uuid')
+    return $this->belongsToMany(Category::class,'category_product','category_uuid','product_uuid');
   }
 }

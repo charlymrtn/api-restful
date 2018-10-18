@@ -7,8 +7,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 
-use DB;
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -24,7 +22,7 @@ class DatabaseSeeder extends Seeder
         Category::truncate();
         Product::truncate();
         Transaction::truncate();
-        DB::table('category_product')->truncate():
+        DB::table('category_product')->truncate();
 
         $cant_users = 100;
         $cant_categories = 20;
@@ -41,7 +39,7 @@ class DatabaseSeeder extends Seeder
             $product->categories()->attach($categories);
           }
         );
-        
+
         factory(Transaction::class, $cant_transactions)->create();
     }
 }

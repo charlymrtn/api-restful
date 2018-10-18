@@ -14,15 +14,14 @@ class CreateCategoryProductTable extends Migration
     public function up()
     {
         Schema::create('category_product', function (Blueprint $table) {
-            $table->uuid('uuid')->primary();
 
             $table->uuid('category_uuid');
-            $table->uuid('products_uuid');
+            $table->uuid('product_uuid');
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['category_uuid','products_uuid']);
+            $table->index(['category_uuid','product_uuid']);
         });
     }
 

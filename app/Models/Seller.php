@@ -5,9 +5,9 @@ namespace App\Models;
 use App\User;
 
 class Seller extends User
-{
+{  
   public function products()
   {
-    return $this->hasMany(Product::class,'seller_uuid','uuid')
+    return $this->hasMany(Product::class,'seller_uuid','uuid');
   }
 }

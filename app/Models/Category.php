@@ -31,15 +31,15 @@ class Category extends Model
     {
       parent::boot();
       self::creating(function ($model){
-        if(empty($model->getKeyName()))
+        if(empty($model->uuid))
         {
-          $model->getKeyName() = Uuid::generate(4)->string;
+          $model->uuid = Uuid::generate(4)->string;
         }
       });
     }
 
     public function products()
     {
-      return $this->belongsToMany(Product::class,'product_uuid','category_uuid')
+      return $this->belongsToMany(Product::class,'category_product','product_uuid','category_uuid');
     }
 }

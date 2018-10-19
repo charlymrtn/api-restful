@@ -58,6 +58,21 @@ class User extends Authenticatable
       });
     }
 
+    public function setNameAttribute($value)
+    {
+      $this->attributes['name'] = strtolower($value);
+    }
+
+    public function setEmailAttribute($value)
+    {
+      $this->attributes['email'] = strtolower($value);
+    }
+
+    public function getNameAttribute($value)
+    {
+      return ucwords($value);
+    }
+
     public function getVerificadoAttribute()
     {
       return $this->verified == User::USUARIO_VERIFICADO;

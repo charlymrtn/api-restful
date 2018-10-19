@@ -102,14 +102,14 @@ class UserController extends ApiController
 
       if($request->has('admin')){
         if (!$user->verificado()) {
-          return response()->json(['error' => 'only verified users can change their admin value','code' => 409],409);
+          return $this->error('only verified users can change their admin value',409);
         }
 
         $user->admin = $request->admin;
       }
 
       if (!$user->isDirty()) {
-        return response()->json(['error' => 'at least must have one different value to update','code' => 422],422);
+        return $this->error('at least must have one different value to update',422);
       }
 
       $user->save();

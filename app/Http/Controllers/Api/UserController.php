@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Http\Resources\User as UserResource;
 
+use Illuminate\Validation\Rule;
+
 class UserController extends Controller
 {
     /**
@@ -71,15 +73,18 @@ class UserController extends Controller
      */
     public function update(Request $request, String $id)
     {
+      $user = User::findOrFail($id);
+
       $rules = [
-        'email' => 'email|unique:users',
+        'email' => [
+        'required',
+        Rule::unique('users')->ignore($user->uuid, 'uuid'),
+      ],
         'password' => 'min:3|confirmed',
         'admin' => 'in:'.User::USUARIO_ADMINISTRADOR.','.User::USUARIO_NO_ADMINISTRADOR,
       ];
 
       $this->validate($request,$rules);
-
-      $user =User::findOrFail($id);
 
       if($request->has('name')){
         $user->name = $request->name;
@@ -97,14 +102,14 @@ class UserController extends Controller
 
       if($request->has('admin')){
         if (!$user->verificado()) {
-          return response()->json(['error' => 'only verified users can change their admin value','code' => 409],409)
+          return response()->json(['error' => 'only verified users can change their admin value','code' => 409],409);
         }
 
         $user->admin = $request->admin;
       }
 
-      if (!$user->->isDirty()) {
-        return response()->json(['error' => 'at least must have one different value to update','code' => 409],409)
+      if (!$user->isDirty()) {
+        return response()->json(['error' => 'at least must have one different value to update','code' => 422],422);
       }
 
       $user->save();
@@ -120,6 +125,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $user = User::findOrFail($id);
+
+      $user->delete();
+
+      return new UserResource($user);
     }
 }

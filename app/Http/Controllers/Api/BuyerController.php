@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Buyer;
 
+use App\Http\Resources\User as BuyerResource;
+
 class BuyerController extends Controller
 {
     /**
@@ -16,18 +18,9 @@ class BuyerController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $buyers = Buyer::has('transactions')->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return BuyerResource::collection($buyers);
     }
 
     /**
@@ -36,31 +29,11 @@ class BuyerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(String $id)
     {
-        //
+        $buyer = Buyer::has('transactions')->findOrFail($id);
+
+        return new BuyerResource($buyer);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

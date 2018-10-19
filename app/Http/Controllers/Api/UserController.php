@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
 use App\User;
 use App\Http\Resources\User as UserResource;
 
 use Illuminate\Validation\Rule;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return UserResource::collection($users);
+        return $this->showAll($users);
     }
 
     /**
@@ -48,7 +48,7 @@ class UserController extends Controller
 
         $user = User::create($campos);
 
-        return new UserResource($user);
+        return $this->showOne($user,201);
     }
 
     /**
@@ -61,7 +61,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return new UserResource($user);
+        return $this->showOne($user);
     }
 
     /**
@@ -114,7 +114,7 @@ class UserController extends Controller
 
       $user->save();
 
-      return new UserResource($user);
+      return $this->showOne($user);
     }
 
     /**
@@ -129,6 +129,6 @@ class UserController extends Controller
 
       $user->delete();
 
-      return new UserResource($user);
+      return $this->showOne($user);
     }
 }

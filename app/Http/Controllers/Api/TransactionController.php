@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
 use App\Models\Transaction;
 
-class TransactionController extends Controller
+class TransactionController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class TransactionController extends Controller
     {
       $transactions = Transaction::all();
 
-      return response()->json(['data'=>$transactions],200);
+      return $this->showAll($transactions);
     }
 
     /**
@@ -42,7 +42,7 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::findOrFail($id);
 
-        return response()->json(['data'=>$transaction],200);
+        return $this->showOne($transaction);
     }
 
     /**

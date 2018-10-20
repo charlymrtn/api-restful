@@ -19,22 +19,20 @@ use Illuminate\Http\Request;
 
 Route::namespace('Api')->group(function () {
     // Controllers Within The "App\Http\Controllers\Admin" Namespace
-    Route::apiResource('users', 'UserController')->parameters([
-      'users' => 'id'
-    ]);
-    Route::apiResource('buyers', 'BuyerController')->only(['index','show'])->parameters([
-      'buyers' => 'id'
-    ]);
-    Route::apiResource('sellers', 'SellerController')->only(['index','show'])->parameters([
-      'sellers' => 'id'
-    ]);;
-    Route::apiResource('products', 'ProductController')->only(['index','show'])->parameters([
-      'products' => 'id'
-    ]);;
-    Route::apiResource('transactions', 'TransactionController')->only(['index','show'])->parameters([
-      'transactions' => 'id'
-    ]);;
-    Route::apiResource('categories', 'CategoryController')->parameters([
-      'categories' => 'id'
-    ]);;
+    Route::apiResource('users', 'UserController');
+
+    Route::apiResource('buyers', 'BuyerController')->only(['index','show']);
+    Route::get('buyers/{buyer}/transactions','BuyerController@transactions')->name('buyers.transactions.index');
+    Route::get('buyers/{buyer}/products','BuyerController@products')->name('buyers.products.index');
+    Route::get('buyers/{buyer}/sellers','BuyerController@sellers')->name('buyers.sellers.index');
+    Route::get('buyers/{buyer}/categories','BuyerController@categories')->name('buyers.categories.index');
+
+    Route::apiResource('sellers', 'SellerController')->only(['index','show']);
+    Route::apiResource('products', 'ProductController')->only(['index','show']);
+
+    Route::apiResource('transactions', 'TransactionController')->only(['index','show']);
+    Route::get('transactions/{transaction}/categories','TransactionController@categories')->name('transactions.categories.index');
+    Route::get('transactions/{transaction}/sellers','TransactionController@sellers')->name('transactions.sellers.index');
+
+    Route::apiResource('categories', 'CategoryController');
 });

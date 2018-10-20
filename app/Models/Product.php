@@ -25,7 +25,7 @@ class Product extends Model
   const PRODUCTO_NO_DISPONIBLE ='no disponible';
 
   protected $fillable = [
-      'uuid', 'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'
+      'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'
   ];
 
   protected $dates = [
@@ -54,7 +54,7 @@ class Product extends Model
 
   public function seller()
   {
-    return $this->belongsTo(Seller::class,'selled_uuid','uuid');
+    return $this->belongsTo(Seller::class,'seller_uuid','uuid');
   }
 
   public function transactions()

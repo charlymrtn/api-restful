@@ -7,8 +7,6 @@ use App\Http\Controllers\ApiController;
 
 use App\Models\Buyer;
 
-use App\Http\Resources\User as BuyerResource;
-
 class BuyerController extends ApiController
 {
     /**
@@ -29,11 +27,46 @@ class BuyerController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(String $buyer)
     {
-        $buyer = Buyer::has('transactions')->findOrFail($id);
+        $aBuyer = Buyer::has('transactions')->findOrFail($buyer);
 
-        return $this->showOne($buyer);
+        return $this->showOne($aBuyer);
+    }
+
+    public function transactions(Buyer $buyer)
+    {
+        return $this->showAll($buyer->transactions);
+    }
+
+    public function products(Buyer $buyer)
+    {
+        $products = $buyer->transactions()->with('product')->get()->pluck('product');
+
+        return $this->showAll($products);
+    }
+
+    public function sellers(Buyer $buyer)
+    {
+        $sellers = $buyer->transactions()->with('product.seller')
+                                        ->get()
+                                        ->pluck('product.seller')
+                                        ->unique('uuid')
+                                        ->values();
+
+        return $this->showAll($sellers);
+    }
+
+    public function categories(Buyer $buyer)
+    {
+        $categories = $buyer->transactions()->with('product.categories')
+                                        ->get()
+                                        ->pluck('product.categories')
+                                        ->collapse()
+                                        ->unique('uuid')
+                                        ->values();
+
+        return $this->showAll($categories);
     }
 
 }

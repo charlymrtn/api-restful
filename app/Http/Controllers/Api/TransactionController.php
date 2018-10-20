@@ -22,17 +22,6 @@ class TransactionController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -45,26 +34,16 @@ class TransactionController extends ApiController
         return $this->showOne($transaction);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function categories(Transaction $transaction)
     {
-        //
+        $categories = $transaction->product->categories;
+
+        return $this->showAll($categories);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function sellers(Transaction $transaction)
     {
-        //
+        $seller = $transaction->product->seller;
+        return $this->showOne($seller);
     }
 }

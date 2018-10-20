@@ -47,10 +47,8 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(Category $category)
     {
-        $category = Category::findOrFail($id);
-
         return $this->showOne($category);
     }
 
@@ -61,10 +59,8 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, String $id)
+    public function update(Request $request, Category $category)
     {
-      $category = Category::findOrFail($id);
-
       $category->fill($request->only([
         'name', 'description'
       ]));
@@ -84,10 +80,8 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(String $id)
+    public function destroy(Category $category)
     {
-        $category = Category::findOrFail($id);
-
         $category->delete();
 
         return $this->showOne($category);

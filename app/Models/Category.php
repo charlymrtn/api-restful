@@ -20,7 +20,7 @@ class Category extends Model
     protected $keyType = 'uuid';
 
     protected $fillable = [
-        'uuid', 'name', 'description'
+        'name', 'description'
     ];
 
     protected $dates = [

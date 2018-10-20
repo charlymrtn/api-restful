@@ -16,7 +16,9 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+
+        return $this->showAll($categories);
     }
 
     /**
@@ -27,7 +29,16 @@ class CategoryController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+          'name' => 'required|string|min:5',
+          'description' => 'required|string|min:10',
+        ];
+
+        $this->validate($request,$rules);
+
+        $category = Category::create($request->all());
+
+        return $this->showOne($category,201);
     }
 
     /**
@@ -36,9 +47,11 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(String $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return $this->showOne($category);
     }
 
     /**
@@ -48,9 +61,21 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, String $id)
     {
-        //
+      $category = Category::findOrFail($id);
+
+      $category->fill($request->only([
+        'name', 'description'
+      ]));
+
+      if ($category->isClean()) {
+        return $this->error('al least one attribute must be different for update',422);
+      }
+
+      $category->save();
+
+      return $this->showOne($category,201);
     }
 
     /**
@@ -59,8 +84,12 @@ class CategoryController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(String $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $category->delete();
+
+        return $this->showOne($category);
     }
 }

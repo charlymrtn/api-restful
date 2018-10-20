@@ -86,4 +86,49 @@ class CategoryController extends ApiController
 
         return $this->showOne($category);
     }
+
+    public function products(Category $category)
+    {
+        return $this->showAll($category->products);
+    }
+
+    public function sellers(Category $category)
+    {
+        $sellers = $category->products()
+                            ->with('seller')
+                            ->get()
+                            ->pluck('seller')
+                            ->unique()
+                            ->values();
+
+        return $this->showAll($sellers);
+    }
+
+    public function transactions(Category $category)
+    {
+        $transactions = $category->products()
+                                 ->whereHas('transactions')
+                                 ->with('transactions')
+                                 ->get()
+                                 ->pluck('transactions')
+                                 ->collapse();
+
+        return $this->showAll($transactions);
+    }
+
+    public function buyers(Category $category)
+    {
+        $buyers = $category->products()
+                           ->whereHas('transactions')
+                           ->with('transactions.buyer')
+                           ->get()
+                           ->pluck('transactions')
+                           ->collapse()
+                           ->pluck('buyer')
+                           ->unique()
+                           ->values();
+
+
+        return $this->showAll($buyers);
+    }
 }

@@ -21,8 +21,8 @@ class Product extends Model
   protected $primaryKey = 'uuid';
   protected $keyType = 'uuid';
 
-  const PRODUCTO_DISPONIBLE ='disponible';
-  const PRODUCTO_NO_DISPONIBLE ='no disponible';
+  const PRODUCTO_DISPONIBLE ='available';
+  const PRODUCTO_NO_DISPONIBLE ='unavailable';
 
   protected $fillable = [
       'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'
@@ -33,7 +33,7 @@ class Product extends Model
   ];
 
   protected $hidden = [
-      'deleted_at'
+      'deleted_at', 'pivot'
   ];
 
   public static function boot()

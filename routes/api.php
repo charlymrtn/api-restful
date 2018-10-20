@@ -35,4 +35,8 @@ Route::namespace('Api')->group(function () {
     Route::get('transactions/{transaction}/sellers','TransactionController@sellers')->name('transactions.sellers.index');
 
     Route::apiResource('categories', 'CategoryController');
+    Route::get('categories/{category}/products','CategoryController@products')->name('categories.products.index');
+    Route::get('categories/{category}/sellers','CategoryController@sellers')->name('categories.sellers.index');
+    Route::get('categories/{category}/transactions','CategoryController@transactions')->name('categories.transactions.index');
+    Route::get('categories/{category}/buyers','CategoryController@buyers')->name('categories.buyers.index');
 });

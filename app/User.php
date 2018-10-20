@@ -13,7 +13,7 @@ class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
 
-    protected $table= 'users';
+    protected $table = 'users';
 
     public $incrementing = false;
     protected $primaryKey = 'uuid';

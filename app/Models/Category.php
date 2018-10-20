@@ -13,7 +13,7 @@ class Category extends Model
 {
     use SoftDeletes;
 
-    protected $table='categories';
+    protected $table = 'categories';
 
     public $incrementing = false;
     protected $primaryKey = 'uuid';

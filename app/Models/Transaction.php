@@ -14,7 +14,7 @@ class Transaction extends Model
 {
   use SoftDeletes;
 
-  protected $table='transactions';
+  protected $table = 'transactions';
 
   public $incrementing = false;
   protected $primaryKey = 'uuid';

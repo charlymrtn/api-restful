@@ -19,7 +19,6 @@ class CreateCategoryProductTable extends Migration
             $table->uuid('product_uuid');
 
             $table->timestamps();
-            $table->softDeletes();
 
             $table->index(['category_uuid','product_uuid']);
         });

@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 Route::namespace('Api')->group(function () {
 
     Route::apiResource('users', 'UserController');
+    Route::get('users/verify/{token}', 'UserController@verify')->name('users.verify');
 
     Route::apiResource('buyers', 'BuyerController')->only(['index','show']);
     Route::get('buyers/{buyer}/transactions','BuyerController@transactions')->name('buyers.transactions');

@@ -31,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'verified', ' verification_token', 'admin'
+        'name', 'email', 'password', 'verified', 'admin', 'verification_token'
     ];
 
     protected $dates = [
@@ -44,7 +44,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'deleted_at', 'verification_token', 'email_verified_at'
+        'password', 'remember_token', 'deleted_at', 'email_verified_at', 'verification_token'
     ];
 
     public static function boot()

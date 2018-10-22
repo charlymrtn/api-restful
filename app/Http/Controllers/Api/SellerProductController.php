@@ -56,7 +56,37 @@ class SellerProductController extends ApiController
      */
     public function update(Request $request, Seller $seller, Product $product)
     {
-        //
+      $rules =[
+        'name' => 'string|min:10,|max:50',
+        'description' => 'string|max:200',
+        'quantity' => 'integer|min:1',
+        'image' => 'image',
+        'status' => 'string|in:'.Product::PRODUCTO_DISPONIBLE.','.Product::PRODUCTO_NO_DISPONIBLE;
+      ];
+
+      $this->validate($request,$rules);
+
+      if ($seller->uuid != $product->seller_uuid)
+          return $this->error('The seller is not the real owner of the product that you want to update',422);
+
+      $product->fill($request->only([
+        'name', 'description', 'quantity'
+      ]));
+
+      if ($request->has('status')) {
+        $product->status = $request->status;
+
+        if ($product->disponible() && $product->categories()->count() == 0)
+            return $this->error('at least the product must have one category',409);
+
+        if ($product->isClean()) {
+          return $this->error('at least one attribute of the product must be different to update');
+        }
+
+        $product->save();
+
+        return $this->showOne($product);
+      }
     }
 
     /**

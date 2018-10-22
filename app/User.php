@@ -80,7 +80,7 @@ class User extends Authenticatable
 
     public function getAdministradorAttribute()
     {
-      return $this->verified == User::USUARIO_ADMINISTRADOR;
+      return $this->admin == User::USUARIO_ADMINISTRADOR;
     }
 
     public static function generateToken()

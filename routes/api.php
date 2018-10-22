@@ -35,6 +35,7 @@ Route::namespace('Api')->group(function () {
     Route::apiResource('products', 'ProductController')->only(['index','show']);
     Route::get('products/{product}/transactions','ProductController@transactions')->name('products.transactions');
     Route::get('products/{product}/buyers','ProductController@buyers')->name('products.buyers');
+    Route::post('products/{product}/transaction/{buyer}','ProductController@transaction')->name('products.transactions');
 
     Route::apiResource('transactions', 'TransactionController')->only(['index','show']);
     Route::get('transactions/{transaction}/categories','TransactionController@categories')->name('transactions.categories');

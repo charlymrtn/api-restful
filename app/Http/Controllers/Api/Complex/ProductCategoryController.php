@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Complex;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
@@ -25,9 +26,13 @@ class ProductCategoryController extends ApiController
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product, Category $category)
     {
-        //
+      //sync sustituye la lista
+      //attach agrega a la lista pero acepta duplicados
+      $product->categories()->syncWithoutDetaching([$category->uuid]);
+
+      return $this->showAll($product->categories);
     }
 
     /**
@@ -36,8 +41,13 @@ class ProductCategoryController extends ApiController
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, Category $category)
     {
-        //
+        if ($product->categories()->find($category->uuid)) {
+          $product->categories()->detach([$category->uuid]);
+          return $this->showAll($product->categories);
+        }else{
+          return $this->error("this category is not inside the product's categories",404);
+        }
     }
 }

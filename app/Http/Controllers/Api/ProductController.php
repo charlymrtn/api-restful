@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 
 use App\Models\Product;
+use App\Models\Transaction;
+use App\User;
+
+use DB;
 
 class ProductController extends ApiController
 {
@@ -16,7 +20,9 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('seller')->get()->each(function($product){
+          $product->setHidden(['seller_uuid']);
+        });
 
         return $this->showAll($products);
     }
@@ -27,9 +33,11 @@ class ProductController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(String $product)
     {
-        return $this->showOne($product);
+        $aproduct = Product::with('seller')->find($product);
+        $aproduct->setHidden(['seller_uuid']);
+        return $this->showOne($aproduct);
     }
 
     public function transactions(Product $product)
@@ -47,6 +55,49 @@ class ProductController extends ApiController
                         ->values();
 
       return $this->showAll($buyers);
+    }
+
+    public function transaction(Request $request, Product $product, User $buyer)
+    {
+      $rules = [
+        'quantity' =>'required|integer|min:1'
+      ];
+
+      $this->validate($request, $rules);
+
+      if ($buyer->uuid == $product->seller->uuid) {
+        return $this->error('the buyer and the seller must be diferent users',409);
+      }
+
+      if (!$buyer->verificado) {
+        return $this->error('the buyer must be a verified user',409);
+      }
+
+      if (!$product->seller->verificado) {
+        return $this->error('the seller must be a verified user',409);
+      }
+
+      if(!$product->disponible){
+        return $this->error('this product is not available',409);
+      }
+
+      if($product->quantity < $request->quantity){
+        return $this->error('this product has no enough units',409);
+      }
+
+      return DB::transaction(function() use ($request, $product, $buyer){
+        $product->quantity -= $request->quantity;
+        $product->save();
+
+        $transaction = Transaction::create([
+          'quantity' => $request->quantity,
+          'buyer_uuid' => $buyer->uuid,
+          'product_uuid' => $product->uuid
+        ]);
+
+        return $this->showOne($transaction,201);
+      });
+
     }
 
 }

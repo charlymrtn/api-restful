@@ -97,7 +97,7 @@ class UserController extends ApiController
       }
 
       if($request->has('admin')){
-        if (!$user->verificado()) {
+        if (!$user->verificado) {
           return $this->error('only verified users can change their admin value',409);
         }
 

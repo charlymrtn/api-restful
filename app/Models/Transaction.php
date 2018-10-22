@@ -21,7 +21,7 @@ class Transaction extends Model
   protected $keyType = 'uuid';
 
   protected $fillable = [
-      'uuid', 'quantity', 'buyer_uuid', 'product_uuid'
+    'quantity', 'buyer_uuid', 'product_uuid'
   ];
 
   protected $dates = [

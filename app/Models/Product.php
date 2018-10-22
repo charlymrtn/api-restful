@@ -45,6 +45,13 @@ class Product extends Model
         $model->uuid = Uuid::generate(4)->string;
       }
     });
+
+    self::updated(function ($model){
+      if ($model->quantity == 0 && $model->disponible) {
+          $model->status = self::PRODUCTO_NO_DISPONIBLE;
+          $model->save();
+      }
+    });
   }
 
   public function getDisponibleAttribute()

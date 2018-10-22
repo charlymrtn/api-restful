@@ -21,7 +21,7 @@ class ProductController extends ApiController
     public function index()
     {
         $products = Product::with('seller')->get()->each(function($product){
-          $product->setHidden(['seller_uuid']);
+          $product->makeHidden(['seller_uuid']);
         });
 
         return $this->showAll($products);
@@ -36,7 +36,7 @@ class ProductController extends ApiController
     public function show(String $product)
     {
         $aproduct = Product::with('seller')->find($product);
-        $aproduct->setHidden(['seller_uuid']);
+        $aproduct->makeHidden(['seller_uuid']);
         return $this->showOne($aproduct);
     }
 

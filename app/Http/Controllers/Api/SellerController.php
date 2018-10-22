@@ -30,4 +30,44 @@ class SellerController extends ApiController
 
       return $this->showOne($aSeller);
   }
+
+  public function transactions(Seller $seller)
+  {
+    $transactions = $seller->products()
+                           ->whereHas('transactions')
+                           ->with('transactions')
+                           ->get()
+                           ->pluck('transactions')
+                           ->collapse();
+
+    return $this->showAll($transactions);
+  }
+
+  public function categories(Seller $seller)
+  {
+    $categories = $seller->products()
+                         ->with('categories')
+                         ->get()
+                         ->pluck('categories')
+                         ->collapse()
+                         ->unique('uuid')
+                         ->values();
+
+    return $this->showAll($categories);
+  }
+
+  public function buyers(Seller $seller)
+  {
+    $buyers = $seller->products()
+                     ->whereHas('transactions')
+                     ->with('transactions.buyer')
+                     ->get()
+                     ->pluck('transactions')
+                     ->collapse()
+                     ->pluck('buyer')
+                     ->unique('uuid')
+                     ->values();
+
+    return $this->showAll($buyers);
+  }
 }

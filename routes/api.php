@@ -18,25 +18,31 @@ use Illuminate\Http\Request;
 // });
 
 Route::namespace('Api')->group(function () {
-    // Controllers Within The "App\Http\Controllers\Admin" Namespace
+
     Route::apiResource('users', 'UserController');
 
     Route::apiResource('buyers', 'BuyerController')->only(['index','show']);
-    Route::get('buyers/{buyer}/transactions','BuyerController@transactions')->name('buyers.transactions.index');
-    Route::get('buyers/{buyer}/products','BuyerController@products')->name('buyers.products.index');
-    Route::get('buyers/{buyer}/sellers','BuyerController@sellers')->name('buyers.sellers.index');
-    Route::get('buyers/{buyer}/categories','BuyerController@categories')->name('buyers.categories.index');
+    Route::get('buyers/{buyer}/transactions','BuyerController@transactions')->name('buyers.transactions');
+    Route::get('buyers/{buyer}/products','BuyerController@products')->name('buyers.products');
+    Route::get('buyers/{buyer}/sellers','BuyerController@sellers')->name('buyers.sellers');
+    Route::get('buyers/{buyer}/categories','BuyerController@categories')->name('buyers.categories');
 
     Route::apiResource('sellers', 'SellerController')->only(['index','show']);
+    Route::get('sellers/{seller}/transactions','SellerController@transactions')->name('sellers.transactions');
+    Route::get('sellers/{seller}/categories','SellerController@categories')->name('sellers.categories');
+    Route::get('sellers/{seller}/buyers','SellerController@buyers')->name('sellers.buyers');
+
+    Route::resource('sellers.products','SellerProductController')->except(['show','create','edit']);
+
     Route::apiResource('products', 'ProductController')->only(['index','show']);
 
     Route::apiResource('transactions', 'TransactionController')->only(['index','show']);
-    Route::get('transactions/{transaction}/categories','TransactionController@categories')->name('transactions.categories.index');
-    Route::get('transactions/{transaction}/sellers','TransactionController@sellers')->name('transactions.sellers.index');
+    Route::get('transactions/{transaction}/categories','TransactionController@categories')->name('transactions.categories');
+    Route::get('transactions/{transaction}/sellers','TransactionController@sellers')->name('transactions.sellers');
 
     Route::apiResource('categories', 'CategoryController');
-    Route::get('categories/{category}/products','CategoryController@products')->name('categories.products.index');
-    Route::get('categories/{category}/sellers','CategoryController@sellers')->name('categories.sellers.index');
-    Route::get('categories/{category}/transactions','CategoryController@transactions')->name('categories.transactions.index');
-    Route::get('categories/{category}/buyers','CategoryController@buyers')->name('categories.buyers.index');
+    Route::get('categories/{category}/products','CategoryController@products')->name('categories.products');
+    Route::get('categories/{category}/sellers','CategoryController@sellers')->name('categories.sellers');
+    Route::get('categories/{category}/transactions','CategoryController@transactions')->name('categories.transactions');
+    Route::get('categories/{category}/buyers','CategoryController@buyers')->name('categories.buyers');
 });

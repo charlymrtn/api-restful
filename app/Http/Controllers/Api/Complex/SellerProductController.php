@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Complex;
 
 use App\Models\Seller;
 use App\Models\Product;

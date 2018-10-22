@@ -32,9 +32,9 @@ Route::namespace('Api')->group(function () {
     Route::get('sellers/{seller}/categories','SellerController@categories')->name('sellers.categories');
     Route::get('sellers/{seller}/buyers','SellerController@buyers')->name('sellers.buyers');
 
-    Route::apiResource('sellers.products','SellerProductController');
-
     Route::apiResource('products', 'ProductController')->only(['index','show']);
+    Route::get('products/{product}/transactions','ProductController@transactions')->name('products.transactions');
+    Route::get('products/{product}/buyers','ProductController@buyers')->name('products.buyers');
 
     Route::apiResource('transactions', 'TransactionController')->only(['index','show']);
     Route::get('transactions/{transaction}/categories','TransactionController@categories')->name('transactions.categories');
@@ -45,4 +45,9 @@ Route::namespace('Api')->group(function () {
     Route::get('categories/{category}/sellers','CategoryController@sellers')->name('categories.sellers');
     Route::get('categories/{category}/transactions','CategoryController@transactions')->name('categories.transactions');
     Route::get('categories/{category}/buyers','CategoryController@buyers')->name('categories.buyers');
+
+    Route::namespace('Complex')->group(function () {
+      Route::apiResource('sellers.products','SellerProductController');
+      Route::apiResource('products.categories','ProductCategoryController')->only(['index','update','destroy']);
+    });
 });

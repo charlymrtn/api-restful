@@ -27,11 +27,26 @@ class ProductController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(Product $product)
     {
-        $product  = Product::findOrFail($id);
-
         return $this->showOne($product);
+    }
+
+    public function transactions(Product $product)
+    {
+        return $this->showAll($product->transactions);
+    }
+
+    public function buyers(Product $product)
+    {
+      $buyers = $product->transactions()
+                        ->with('buyer')
+                        ->get()
+                        ->pluck('buyer')
+                        ->unique('uuid')
+                        ->values();
+
+      return $this->showAll($buyers);
     }
 
 }

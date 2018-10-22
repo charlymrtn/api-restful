@@ -32,7 +32,7 @@ Route::namespace('Api')->group(function () {
     Route::get('sellers/{seller}/categories','SellerController@categories')->name('sellers.categories');
     Route::get('sellers/{seller}/buyers','SellerController@buyers')->name('sellers.buyers');
 
-    Route::resource('sellers.products','SellerProductController')->except(['show','create','edit']);
+    Route::apiResource('sellers.products','SellerProductController');
 
     Route::apiResource('products', 'ProductController')->only(['index','show']);
 

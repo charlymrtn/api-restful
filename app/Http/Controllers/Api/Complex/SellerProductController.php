@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+use Storage;
+
 class SellerProductController extends ApiController
 {
     /**
@@ -40,7 +42,7 @@ class SellerProductController extends ApiController
 
         $data =$request->all();
         $data['status'] = Product::PRODUCTO_NO_DISPONIBLE;
-        $data['image'] = 'product1.jpg';
+        $data['image'] = $request->image->store('','images');
         $data['seller_uuid'] = $seller->uuid;
 
         $product =Product::create($data);
@@ -87,6 +89,10 @@ class SellerProductController extends ApiController
             return $this->error('at least the product must have one category',409);
       }
 
+      if ($request->has('image')) {
+        
+      }
+
       if ($product->isClean()) {
         return $this->error('at least one attribute of the product must be different to update');
       }
@@ -105,6 +111,8 @@ class SellerProductController extends ApiController
     public function destroy(Seller $seller, Product $product)
     {
       $this->verifySeller($seller, $product);
+
+      Storage::disk('images')->delete($product->image);
 
       $product->delete();
 

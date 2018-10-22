@@ -89,8 +89,9 @@ class SellerProductController extends ApiController
             return $this->error('at least the product must have one category',409);
       }
 
-      if ($request->has('image')) {
-        
+      if ($request->hasFile('image')) {
+        Storage::disk('images')->delete($product->image);
+        $product->image = $request->image->store('','images');
       }
 
       if ($product->isClean()) {

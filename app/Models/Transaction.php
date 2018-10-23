@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Buyer;
 use App\Models\Product;
 
+use App\Transformers\TransactionTransformer;
+
 class Transaction extends Model
 {
   use SoftDeletes;
@@ -19,6 +21,8 @@ class Transaction extends Model
   public $incrementing = false;
   protected $primaryKey = 'uuid';
   protected $keyType = 'uuid';
+
+  public $transformer = TransactionTransformer::class;
 
   protected $fillable = [
     'quantity', 'buyer_uuid', 'product_uuid'

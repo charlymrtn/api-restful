@@ -11,6 +11,8 @@ use App\Models\Category;
 use App\Models\Seller;
 use App\Models\Transaction;
 
+use App\Transformers\ProductTransformer;
+
 class Product extends Model
 {
   use SoftDeletes;
@@ -22,7 +24,9 @@ class Product extends Model
   protected $keyType = 'uuid';
 
   const PRODUCTO_DISPONIBLE ='available';
-  const PRODUCTO_NO_DISPONIBLE ='unavailable';
+  const PRODUCTO_NO_DISPONIBLE ='unavailable';}
+
+  public $transformer = ProductTransformer::class;
 
   protected $fillable = [
       'name', 'description', 'quantity', 'status', 'image', 'seller_uuid'

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Product;
 
+use App\Transformers\CategoryTransformer;
+
 class Category extends Model
 {
     use SoftDeletes;
@@ -18,6 +20,8 @@ class Category extends Model
     public $incrementing = false;
     protected $primaryKey = 'uuid';
     protected $keyType = 'uuid';
+
+    public $transformer = CategoryTransformer::class;
 
     protected $fillable = [
         'name', 'description'

@@ -13,6 +13,8 @@ use Mail;
 use App\Mail\UserCreated;
 use App\Mail\UserMailChanged;
 
+use App\Transformers\UserTransformer;
+
 class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
@@ -28,6 +30,8 @@ class User extends Authenticatable
 
     const USUARIO_ADMINISTRADOR = 'true';
     const USUARIO_NO_ADMINISTRADOR = 'false';
+
+    public $transformer = UserTransformer::class;
 
     /**
      * The attributes that are mass assignable.

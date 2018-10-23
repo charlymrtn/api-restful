@@ -23,7 +23,7 @@ class ProductTransformer extends TransformerAbstract
           'available' => (string)$product->status,
           'photo' => url("img/{$product->image}"),
           'seller' => (string)$product->seller_uuid,
-          'creation' => (string)$product->created_at->format('d/M/Y')
+          'creation' => (string)$product->created_at->format('d/m/Y')
       ];
     }
 }

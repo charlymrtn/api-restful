@@ -20,7 +20,7 @@ class TransactionTransformer extends TransformerAbstract
           'num_items' => (int)$transaction->quantity,
           'item' => (string)$transaction->product_uuid,
           'buyer' => (string)$transaction->buyer_uuid,
-          'creation' => (string)$transaction->created_at->format('d/M/Y')
+          'creation' => (string)$transaction->created_at->format('d/m/Y')
       ];
     }
 }

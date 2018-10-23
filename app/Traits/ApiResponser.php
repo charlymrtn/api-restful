@@ -10,7 +10,7 @@ trait ApiResponser
 {
   private function success($data,$code)
   {
-    return response()->json(['data'=>$data],$code);
+    return response()->json($data,$code);
   }
 
   protected function error($message,$code)
@@ -20,16 +20,33 @@ trait ApiResponser
 
   protected function showAll(Collection $collection, $code =200)
   {
+    if ($collection->isEmpty()) {
+      return $this->success(['data' => $collection],404);
+    }
+
+    $transformer = $collection->first()->transformer;
+    $collection = $this->transform($collection,$transformer);
+
     return  $this->success($collection,$code);
   }
 
   protected function showOne(Model $model, $code =200)
   {
+    $transformer = $model->transformer;
+    $model = $this->transform($model,$transformer);
+
     return  $this->success($model,$code);
   }
 
   protected function message($message,$code = 200)
   {
     return response()->json(['message'=>$message],$code);
+  }
+
+  protected function transform($data, $transformer)
+  {
+    $transformation = fractal($data, new $transformer);
+
+    return $transformation->toArray();
   }
 }

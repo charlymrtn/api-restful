@@ -21,7 +21,7 @@ class UserTransformer extends TransformerAbstract
             'mail' => (string)$user->email,
             'verified' => (boolean)$user->verified,
             'administrator' => ($user->admin === 'true'),
-            'creation' => (string)$user->created_at->format('d/M/Y')
+            'creation' => (string)$user->created_at->format('d/m/Y')
         ];
     }
 }

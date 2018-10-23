@@ -20,7 +20,7 @@ class BuyerTransformer extends TransformerAbstract
           'full-name' => (string)$buyer->name,
           'mail' => (string)$buyer->email,
           'verified' => (boolean)$buyer->verified,
-          'creation' => (string)$buyer->created_at->format('d/M/Y')
+          'creation' => (string)$buyer->created_at->format('d/m/Y')
       ];
     }
 }

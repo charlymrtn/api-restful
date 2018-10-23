@@ -19,7 +19,7 @@ class CategoryTransformer extends TransformerAbstract
           'identifier' => (string)$category->uuid,
           'title' => (string)$category->name,
           'details' => (string)$category->description,
-          'creation' => (string)$category->created_at->format('d/M/Y')
+          'creation' => (string)$category->created_at->format('d/m/Y')
       ];
     }
 }

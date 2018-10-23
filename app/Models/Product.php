@@ -24,7 +24,7 @@ class Product extends Model
   protected $keyType = 'uuid';
 
   const PRODUCTO_DISPONIBLE ='available';
-  const PRODUCTO_NO_DISPONIBLE ='unavailable';}
+  const PRODUCTO_NO_DISPONIBLE ='unavailable';
 
   public $transformer = ProductTransformer::class;
 

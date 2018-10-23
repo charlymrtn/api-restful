@@ -10,6 +10,9 @@ use App\Http\Resources\User as UserResource;
 
 use Illuminate\Validation\Rule;
 
+use Mail;
+use App\Mail\UserCreated;
+
 class UserController extends ApiController
 {
     /**
@@ -136,5 +139,15 @@ class UserController extends ApiController
       $user->save();
 
       return $this->message("the user $user->uuid account has been verified.");
+    }
+
+    public function resend(User $user)
+    {
+      if ($user->verificado) {
+        return $this->error('this user has already been verified',409);
+      }
+      Mail::to($user->email)->send(new UserCreated($user));
+
+      return $this->message('the verification email has been resended');
     }
 }

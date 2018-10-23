@@ -21,6 +21,7 @@ Route::namespace('Api')->group(function () {
 
     Route::apiResource('users', 'UserController');
     Route::get('users/verify/{token}', 'UserController@verify')->name('users.verify');
+    Route::get('users/{user}/resend', 'UserController@resend')->name('users.resend');
 
     Route::apiResource('buyers', 'BuyerController')->only(['index','show']);
     Route::get('buyers/{buyer}/transactions','BuyerController@transactions')->name('buyers.transactions');

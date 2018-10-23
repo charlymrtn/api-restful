@@ -34,7 +34,7 @@ class UserController extends ApiController
     {
         $rules = [
           'name' => 'required|string',
-          'email' => 'required|email|unique:users',
+          'email' => 'required|email|unique:users,email,NULL,uuid,deleted_at,NULL',
           'password' => 'required|min:3|confirmed',
         ];
 

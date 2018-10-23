@@ -60,7 +60,7 @@ class User extends Authenticatable
         }
       });
 
-      self::created(function ($model){
+      self::created(function ($user){
         Mail::to($user->email)->send(new UserCreated($user));
       });
     }

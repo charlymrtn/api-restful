@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Mail;
 use App\Mail\UserCreated;
+use App\Mail\UserMailChanged;
 
 class User extends Authenticatable
 {
@@ -62,6 +63,13 @@ class User extends Authenticatable
 
       self::created(function ($user){
         Mail::to($user->email)->send(new UserCreated($user));
+      });
+
+      self::updated(function ($user){
+        if ($user->isDirty('email')) {
+          Mail::to($user->email)->send(new UserMailChanged($user));
+        }
+
       });
     }
 

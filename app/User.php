@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Mail;
+use App\Mail\UserCreated;
+
 class User extends Authenticatable
 {
     use Notifiable, SoftDeletes;
@@ -55,6 +58,10 @@ class User extends Authenticatable
         {
           $model->uuid = Uuid::generate(4)->string;
         }
+      });
+
+      self::created(function ($model){
+        Mail::to($user->email)->send(new UserCreated($user));
       });
     }
 

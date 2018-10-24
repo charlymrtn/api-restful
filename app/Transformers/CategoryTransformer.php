@@ -19,7 +19,29 @@ class CategoryTransformer extends TransformerAbstract
           'identifier' => (string)$category->uuid,
           'title' => (string)$category->name,
           'details' => (string)$category->description,
-          'creation' => (string)$category->created_at->format('d/m/Y')
+          'creation' => (string)$category->created_at->format('d/m/Y'),
+          'links' => [
+            [
+              'rel' => 'self',
+              'href' => route('categories.show',$category->uuid)
+            ],
+            [
+              'rel' => 'categories.buyers',
+              'href' => route('categories.buyers',$category->uuid)
+            ],
+            [
+              'rel' => 'categories.products',
+              'href' => route('categories.products',$category->uuid)
+            ],
+            [
+              'rel' => 'categories.sellers',
+              'href' => route('categories.sellers',$category->uuid)
+            ],
+            [
+              'rel' => 'categories.transactions',
+              'href' => route('categories.transactions',$category->uuid)
+            ]
+          ]
       ];
     }
 

@@ -23,7 +23,29 @@ class ProductTransformer extends TransformerAbstract
           'available' => (string)$product->status,
           'photo' => url("img/{$product->image}"),
           'seller' => (string)$product->seller_uuid,
-          'creation' => (string)$product->created_at->format('d/m/Y')
+          'creation' => (string)$product->created_at->format('d/m/Y'),
+          'links' => [
+            [
+              'rel' => 'self',
+              'href' => route('products.show',$product->uuid)
+            ],
+            [
+              'rel' => 'products.buyers',
+              'href' => route('products.buyers',$product->uuid)
+            ],
+            [
+              'rel' => 'products.categories',
+              'href' => route('products.categories.index',$product->uuid)
+            ],
+            [
+              'rel' => 'products.transactions',
+              'href' => route('products.transactions',$product->uuid)
+            ],
+            [
+              'rel' => 'sellers',
+              'href' => route('sellers.show',$product->seller_uuid)
+            ]
+          ]
       ];
     }
 

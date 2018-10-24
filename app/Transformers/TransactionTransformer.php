@@ -20,7 +20,29 @@ class TransactionTransformer extends TransformerAbstract
           'num_items' => (int)$transaction->quantity,
           'item' => (string)$transaction->product_uuid,
           'buyer' => (string)$transaction->buyer_uuid,
-          'creation' => (string)$transaction->created_at->format('d/m/Y')
+          'creation' => (string)$transaction->created_at->format('d/m/Y'),
+          'links' => [
+            [
+              'rel' => 'self',
+              'href' => route('transactions.show',$transaction->uuid)
+            ],
+            [
+              'rel' => 'transactions.categories',
+              'href' => route('transactions.categories',$transaction->uuid)
+            ],
+            [
+              'rel' => 'transactions.sellers',
+              'href' => route('transactions.sellers',$transaction->uuid)
+            ],
+            [
+              'rel' => 'buyers',
+              'href' => route('buyers.show',$transaction->buyer_uuid)
+            ],
+            [
+              'rel' => 'products',
+              'href' => route('products.show',$transaction->product_uuid)
+            ]
+          ]
       ];
     }
 

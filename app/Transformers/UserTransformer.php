@@ -21,7 +21,13 @@ class UserTransformer extends TransformerAbstract
             'mail' => (string)$user->email,
             'verification' => (boolean)$user->verified,
             'administrator' => ($user->admin === 'true'),
-            'creation' => (string)$user->created_at->format('d/m/Y')
+            'creation' => (string)$user->created_at->format('d/m/Y'),
+            'links' => [
+              [
+                'rel' => 'self',
+                'href' => route('users.show',$user->uuid)
+              ]
+            ]
         ];
     }
 

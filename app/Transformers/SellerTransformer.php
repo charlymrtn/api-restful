@@ -20,7 +20,33 @@ class SellerTransformer extends TransformerAbstract
           'full-name' => (string)$seller->name,
           'mail' => (string)$seller->email,
           'verification' => (boolean)$seller->verified,
-          'creation' => (string)$seller->created_at->format('d/m/Y')
+          'creation' => (string)$seller->created_at->format('d/m/Y'),
+          'links' => [
+            [
+              'rel' => 'self',
+              'href' => route('sellers.show',$seller->uuid)
+            ],
+            [
+              'rel' => 'sellers.buyers',
+              'href' => route('sellers.buyers',$seller->uuid)
+            ],
+            [
+              'rel' => 'sellers.categories',
+              'href' => route('sellers.categories',$seller->uuid)
+            ],
+            [
+              'rel' => 'sellers.products',
+              'href' => route('sellers.products.index',$seller->uuid)
+            ],
+            [
+              'rel' => 'sellers.transactions',
+              'href' => route('sellers.transactions',$seller->uuid)
+            ],
+            [
+              'rel' => 'users',
+              'href' => route('users.show', $seller->uuid)
+            ]
+          ]
       ];
     }
 

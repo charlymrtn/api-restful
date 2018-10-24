@@ -26,4 +26,20 @@ class ProductTransformer extends TransformerAbstract
           'creation' => (string)$product->created_at->format('d/m/Y')
       ];
     }
+
+    public static function originalAttribute($index)
+    {
+      $attributes = [
+        'identifier' => 'uuid',
+        'title' => 'name',
+        'details' => 'description',
+        'stock' => 'quantity',
+        'available' => 'status',
+        'photo' => 'image',
+        'seller' => 'seller_uuid',
+        'creation' => 'created_at'
+      ];
+
+      return isset($attributes[$index]) ? $attributes[$index] : null;
+    }
 }

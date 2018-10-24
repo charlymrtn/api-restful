@@ -22,4 +22,16 @@ class CategoryTransformer extends TransformerAbstract
           'creation' => (string)$category->created_at->format('d/m/Y')
       ];
     }
+
+    public static function originalAttribute($index)
+    {
+      $attributes = [
+        'identifier' => 'uuid',
+        'title' => 'name',
+        'details' => 'description',
+        'creation' => 'created_at'
+      ];
+
+      return isset($attributes[$index]) ? $attributes[$index] : null;
+    }
 }

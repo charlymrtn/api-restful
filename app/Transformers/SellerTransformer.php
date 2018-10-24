@@ -19,8 +19,21 @@ class SellerTransformer extends TransformerAbstract
           'identifier' => (string)$seller->uuid,
           'full-name' => (string)$seller->name,
           'mail' => (string)$seller->email,
-          'verified' => (boolean)$seller->verified,
+          'verification' => (boolean)$seller->verified,
           'creation' => (string)$seller->created_at->format('d/m/Y')
       ];
+    }
+
+    public static function originalAttribute($index)
+    {
+      $attributes = [
+        'identifier' => 'uuid',
+        'full-name' => 'name',
+        'mail' => 'email',
+        'verification' => '>verified',
+        'creation' => 'created_at'
+      ];
+
+      return isset($attributes[$index]) ? $attributes[$index] : null;
     }
 }

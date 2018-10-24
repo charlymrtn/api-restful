@@ -23,4 +23,17 @@ class TransactionTransformer extends TransformerAbstract
           'creation' => (string)$transaction->created_at->format('d/m/Y')
       ];
     }
+
+    public static function originalAttribute($index)
+    {
+      $attributes = [
+        'identifier' => 'uuid',
+        'num_items' => 'quantity',
+        'item' => 'product_uuid',
+        'buyer' => '>buyer_uuid',
+        'creation' => 'created_at'
+      ];
+
+      return isset($attributes[$index]) ? $attributes[$index] : null;
+    }
 }

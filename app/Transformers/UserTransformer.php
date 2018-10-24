@@ -19,9 +19,23 @@ class UserTransformer extends TransformerAbstract
             'identifier' => (string)$user->uuid,
             'full-name' => (string)$user->name,
             'mail' => (string)$user->email,
-            'verified' => (boolean)$user->verified,
+            'verification' => (boolean)$user->verified,
             'administrator' => ($user->admin === 'true'),
             'creation' => (string)$user->created_at->format('d/m/Y')
         ];
+    }
+
+    public static function originalAttribute($index)
+    {
+      $attributes = [
+        'identifier' => 'uuid',
+        'full-name' => 'name',
+        'mail' => 'email',
+        'verification' => '>verified',
+        'administrator' => 'admin',
+        'creation' => 'created_at'
+      ];
+
+      return isset($attributes[$index]) ? $attributes[$index] : null;
     }
 }

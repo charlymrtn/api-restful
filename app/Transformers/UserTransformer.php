@@ -31,7 +31,7 @@ class UserTransformer extends TransformerAbstract
         'identifier' => 'uuid',
         'full-name' => 'name',
         'mail' => 'email',
-        'verification' => '>verified',
+        'verification' => 'verified',
         'administrator' => 'admin',
         'creation' => 'created_at'
       ];

@@ -10,9 +10,22 @@ use App\Models\Transaction;
 use App\User;
 
 use DB;
+use App\Transformers\TransactionTransformer;
 
 class ProductController extends ApiController
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('transform.input:'. TransactionTransformer::class)->only(['transaction']);
+    }
+
     /**
      * Display a listing of the resource.
      *

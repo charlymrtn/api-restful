@@ -11,8 +11,21 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use Storage;
 
+use App\Transformers\ProductTransformer;
+
 class SellerProductController extends ApiController
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('transform.input:'. ProductTransformer::class)->only(['store','update']);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -56,8 +56,21 @@ class BuyerTransformer extends TransformerAbstract
         'identifier' => 'uuid',
         'full-name' => 'name',
         'mail' => 'email',
-        'verification' => '>verified',
+        'verification' => 'verified',
         'creation' => 'created_at'
+      ];
+
+      return isset($attributes[$index]) ? $attributes[$index] : null;
+    }
+
+    public static function transformAttribute($index)
+    {
+      $attributes = [
+        'uuid' => 'identifier' ,
+        'name' => 'full-name' ,
+        'email' => 'mail' ,
+        'verified' => 'verification' ,
+        'created_at' => 'creation' 
       ];
 
       return isset($attributes[$index]) ? $attributes[$index] : null;

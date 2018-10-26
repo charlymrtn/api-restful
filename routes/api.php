@@ -54,3 +54,5 @@ Route::namespace('Api')->group(function () {
       Route::apiResource('products.categories','ProductCategoryController')->only(['index','update','destroy']);
     });
 });
+
+Route::post('oauth/token','\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken')->name('passport.token');

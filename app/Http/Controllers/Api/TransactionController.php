@@ -9,6 +9,15 @@ use App\Models\Transaction;
 
 class TransactionController extends ApiController
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('client.credentials')->only(['categories']);
+    }
 
     /**
      * Display a listing of the resource.

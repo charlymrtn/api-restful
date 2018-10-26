@@ -10,6 +10,16 @@ use App\Http\Controllers\ApiController;
 class ProductCategoryController extends ApiController
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('client.credentials')->only(['index']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

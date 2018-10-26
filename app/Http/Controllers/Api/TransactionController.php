@@ -17,6 +17,7 @@ class TransactionController extends ApiController
     public function __construct()
     {
         $this->middleware('client.credentials')->only(['categories']);
+        $this->middleware('auth:api')->except(['categories']);
     }
 
     /**

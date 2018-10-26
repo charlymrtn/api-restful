@@ -11,6 +11,17 @@ use App\Http\Resources\User as SellerResource;
 
 class SellerController extends ApiController
 {
+
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+      $this->middleware('auth:api');
+  }
+
   public function index()
   {
       $sellers = Seller::has('products')->get();

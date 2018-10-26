@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Database\QueryException;
+use Illuminate\Session\TokenMismatchException;
 
 use App\Traits\ApiResponser;
 
@@ -93,6 +94,10 @@ class Handler extends ExceptionHandler
           if($code == 1451) return $this->error('database error while deleting resources',409);
         }
 
+        if($exception instanceOf TokenMismatchException){
+          return redirect()->back()->withInput($request->input());
+        }
+
         if (config('app.debug')) {
           return parent::render($request, $exception);
         }
@@ -110,7 +115,13 @@ class Handler extends ExceptionHandler
      */
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
-        $errors = $e->validator->errors()->getMessages();
+       $errors = $e->validator->errors()->getMessages();
+
+       if ($this->isFront($request)) {
+           return $request->ajax() ? response()->json($errors,422) : redirect()->back()
+                                                                               ->withInput($request->input())
+                                                                               ->withErrors($errors);
+       }
 
         return $this->error($errors,422);
     }
@@ -124,6 +135,16 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+
+      if ($this->isFront($request)) {
+          return redirect()->guest('login');
+      }
+
         return $this->error($exception->getMessage(), 401);
+    }
+
+    private function isFront($request)
+    {
+      return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
     }
 }

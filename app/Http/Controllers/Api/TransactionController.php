@@ -19,6 +19,7 @@ class TransactionController extends ApiController
         $this->middleware('client.credentials')->only(['categories']);
         $this->middleware('auth:api')->except(['categories']);
         $this->middleware('scope:read-general')->only(['sellers','show']);
+        $this->middleware('can:view,transaction')->only(['show','sellers']);
     }
 
     /**
@@ -39,10 +40,8 @@ class TransactionController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(Transaction $transaction)
     {
-        $transaction = Transaction::findOrFail($id);
-
         return $this->showOne($transaction);
     }
 

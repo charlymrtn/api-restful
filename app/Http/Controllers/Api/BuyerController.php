@@ -19,6 +19,7 @@ class BuyerController extends ApiController
         //parent::__construct();
         $this->middleware('auth:api');
         $this->middleware('scope:read-general')->only(['transactions','products','show','categories']);
+        $this->middleware('can:view,buyer')->only(['categories','show','products','transactions']);
     }
 
     /**

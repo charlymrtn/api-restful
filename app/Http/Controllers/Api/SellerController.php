@@ -21,6 +21,7 @@ class SellerController extends ApiController
   {
       $this->middleware('auth:api');
       $this->middleware('scope:read-general')->only(['transactions','show','categories']);
+      $this->middleware('can:view,seller')->only(['categories','show','transactions']);
   }
 
   public function index()

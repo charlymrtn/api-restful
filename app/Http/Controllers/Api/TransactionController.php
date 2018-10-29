@@ -18,6 +18,7 @@ class TransactionController extends ApiController
     {
         $this->middleware('client.credentials')->only(['categories']);
         $this->middleware('auth:api')->except(['categories']);
+        $this->middleware('scope:read-general')->only(['sellers','show']);
     }
 
     /**

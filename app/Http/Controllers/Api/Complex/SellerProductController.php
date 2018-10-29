@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Auth\Access\AuthorizationException;
 
 use Storage;
 
@@ -24,7 +25,7 @@ class SellerProductController extends ApiController
     {
         $this->middleware('auth:api');
         $this->middleware('transform.input:'. ProductTransformer::class)->only(['store','update']);
-        $this->middleware('scope:manage-product')->except(['index','show']);
+        $this->middleware('scope:manage-product')->except(['index']);
     }
 
     /**
@@ -34,7 +35,12 @@ class SellerProductController extends ApiController
      */
     public function index(Seller $seller)
     {
-        return $this->showAll($seller->products);
+        if (request()->user()->tokenCan('read-general') || request()->user()->tokenCan('manage-product')) {
+          return $this->showAll($seller->products);
+        }
+
+        throw new AuthorizationException;
+
     }
 
     /**

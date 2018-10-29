@@ -20,6 +20,7 @@ class SellerController extends ApiController
   public function __construct()
   {
       $this->middleware('auth:api');
+      $this->middleware('scope:read-general')->only(['transactions','show','categories']);
   }
 
   public function index()

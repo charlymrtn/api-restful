@@ -24,6 +24,7 @@ class SellerProductController extends ApiController
     {
         $this->middleware('auth:api');
         $this->middleware('transform.input:'. ProductTransformer::class)->only(['store','update']);
+        $this->middleware('scope:manage-product')->except(['index','show']);
     }
 
     /**
@@ -136,6 +137,6 @@ class SellerProductController extends ApiController
     protected function verifySeller(Seller $seller, Product $product)
     {
       if ($seller->uuid != $product->seller_uuid)
-          throw new HttpException(422,'The seller is not the real owner of the product that you want to delete');
+          throw new HttpException(422,'This seller is not the real owner of the product that you want to edit/delete');
     }
 }

@@ -25,6 +25,7 @@ class ProductController extends ApiController
         $this->middleware('client.credentials')->only(['index','show']);
         $this->middleware('auth:api')->only(['buyers','transactions','transaction']);
         $this->middleware('transform.input:'. TransactionTransformer::class)->only(['transaction']);
+        $this->middleware('scope:purchase-product')->only(['transaction']);
     }
 
     /**

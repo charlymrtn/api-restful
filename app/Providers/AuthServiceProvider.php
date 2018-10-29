@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::tokensCan([
           'purchase-product' => 'crear movimientos para comprar productos determinados',
-          'manage-product' => 'crear, ver, actualizar  productos',
+          'manage-product' => 'crear, ver, actualizar productos',
           'manage-account' => 'obtener información de la cuenta, modificar datos básicos, no se puede eliminar',
           'read-general' => 'leer categorias, productos, ventas, información general'
         ]);

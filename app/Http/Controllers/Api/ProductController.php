@@ -58,11 +58,13 @@ class ProductController extends ApiController
 
     public function transactions(Product $product)
     {
+        $this->allowAdmin();
         return $this->showAll($product->transactions);
     }
 
     public function buyers(Product $product)
     {
+      $this->allowAdmin();
       $buyers = $product->transactions()
                         ->with('buyer')
                         ->get()

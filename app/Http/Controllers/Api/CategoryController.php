@@ -42,6 +42,8 @@ class CategoryController extends ApiController
      */
     public function store(Request $request)
     {
+        $this->allowAdmin();
+
         $rules = [
           'name' => 'required|string|min:5',
           'description' => 'required|string|min:10',
@@ -74,6 +76,8 @@ class CategoryController extends ApiController
      */
     public function update(Request $request, Category $category)
     {
+      $this->allowAdmin();
+
       $category->fill($request->only([
         'name', 'description'
       ]));
@@ -95,6 +99,7 @@ class CategoryController extends ApiController
      */
     public function destroy(Category $category)
     {
+        $this->allowAdmin();
         $category->delete();
 
         return $this->showOne($category);
@@ -107,6 +112,7 @@ class CategoryController extends ApiController
 
     public function sellers(Category $category)
     {
+        $this->allowAdmin();
         $sellers = $category->products()
                             ->with('seller')
                             ->get()
@@ -119,6 +125,7 @@ class CategoryController extends ApiController
 
     public function transactions(Category $category)
     {
+        $this->allowAdmin();
         $transactions = $category->products()
                                  ->whereHas('transactions')
                                  ->with('transactions')
@@ -131,6 +138,8 @@ class CategoryController extends ApiController
 
     public function buyers(Category $category)
     {
+        $this->allowAdmin();
+
         $buyers = $category->products()
                            ->whereHas('transactions')
                            ->with('transactions.buyer')

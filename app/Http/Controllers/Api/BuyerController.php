@@ -29,6 +29,8 @@ class BuyerController extends ApiController
      */
     public function index()
     {
+        $this->allowAdmin();
+
         $buyers = Buyer::has('transactions')->get();
 
         return $this->showAll($buyers);
@@ -61,6 +63,7 @@ class BuyerController extends ApiController
 
     public function sellers(Buyer $buyer)
     {
+        $this->allowAdmin();
         $sellers = $buyer->transactions()->with('product.seller')
                                         ->get()
                                         ->pluck('product.seller')

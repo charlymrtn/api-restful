@@ -39,6 +39,7 @@ class UserController extends ApiController
      */
     public function index()
     {
+        $this->allowAdmin();
         $users = User::all();
 
         return $this->showAll($users);
@@ -91,6 +92,7 @@ class UserController extends ApiController
      */
     public function update(Request $request, User $user)
     {
+      $this->allowAdmin();
       $rules = [
         'email' => [
         'required',

@@ -15,6 +15,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Database\QueryException;
 use Illuminate\Session\TokenMismatchException;
 
+use Barryvdh\Cors\CorsService;
+
 use App\Traits\ApiResponser;
 
 class Handler extends ExceptionHandler
@@ -60,50 +62,58 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if($exception instanceOf ValidationException){
-          return $this->convertValidationExceptionToResponse($exception,$request);
-        }
+        $response = $this->handleException($request,$exception);
+        
+        app(CorsService::class)->addActualRequestHeaders($response, $request);
 
-        if($exception instanceOf ModelNotFoundException){
-          $model = strtolower(class_basename($exception->getModel()));
-          return $this->error($model.' model instance not found',404);
-        }
+        return $response;
+    }
 
-        if($exception instanceOf AuthenticationException){
-          return $this->unauthenticated($request,$exception);
-        }
+    public function handleException($request, Exception $exception)
+    {
+      if($exception instanceOf ValidationException){
+        return $this->convertValidationExceptionToResponse($exception,$request);
+      }
 
-        if($exception instanceOf AuthorizationException){
-          return $this->error('the user does not have enough permissions',403);
-        }
+      if($exception instanceOf ModelNotFoundException){
+        $model = strtolower(class_basename($exception->getModel()));
+        return $this->error($model.' model instance not found',404);
+      }
 
-        if($exception instanceOf NotFoundHttpException){
-          return $this->error('the path is not found',404);
-        }
+      if($exception instanceOf AuthenticationException){
+        return $this->unauthenticated($request,$exception);
+      }
 
-        if($exception instanceOf MethodNotAllowedHttpException){
-          return $this->error('the method is not allowed',405);
-        }
+      if($exception instanceOf AuthorizationException){
+        return $this->error('the user does not have enough permissions',403);
+      }
 
-        if($exception instanceOf HttpException){
-          return $this->error($exception->getMessage(),$exception->getStatusCode());
-        }
+      if($exception instanceOf NotFoundHttpException){
+        return $this->error('the path is not found',404);
+      }
 
-        if($exception instanceOf QueryException){
-          $code = $exception->errorInfo[1];
-          if($code == 1451) return $this->error('database error while deleting resources',409);
-        }
+      if($exception instanceOf MethodNotAllowedHttpException){
+        return $this->error('the method is not allowed',405);
+      }
 
-        if($exception instanceOf TokenMismatchException){
-          return redirect()->back()->withInput($request->input());
-        }
+      if($exception instanceOf HttpException){
+        return $this->error($exception->getMessage(),$exception->getStatusCode());
+      }
 
-        if (config('app.debug')) {
-          return parent::render($request, $exception);
-        }
+      if($exception instanceOf QueryException){
+        $code = $exception->errorInfo[1];
+        if($code == 1451) return $this->error('database error while deleting resources',409);
+      }
 
-        return $this->error('Unknown exception',500);
+      if($exception instanceOf TokenMismatchException){
+        return redirect()->back()->withInput($request->input());
+      }
 
+      if (config('app.debug')) {
+        return parent::render($request, $exception);
+      }
+
+      return $this->error('Unknown exception',500);
     }
 
     /**

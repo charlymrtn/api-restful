@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Database\QueryException;
 use Illuminate\Session\TokenMismatchException;
 
-use Barryvdh\Cors\CorsService;
+use Asm89\Stack\CorsService;
 
 use App\Traits\ApiResponser;
 
@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         $response = $this->handleException($request,$exception);
-        
+
         app(CorsService::class)->addActualRequestHeaders($response, $request);
 
         return $response;

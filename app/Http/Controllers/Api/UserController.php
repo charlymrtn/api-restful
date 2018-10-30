@@ -92,7 +92,7 @@ class UserController extends ApiController
      */
     public function update(Request $request, User $user)
     {
-      $this->allowAdmin();
+
       $rules = [
         'email' => [
         'required',
@@ -119,6 +119,7 @@ class UserController extends ApiController
       }
 
       if($request->has('admin')){
+        $this->allowAdmin();
         if (!$user->verificado) {
           return $this->error('only verified users can change their admin value',409);
         }
